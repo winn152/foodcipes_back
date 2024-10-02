@@ -115,7 +115,7 @@ router.post("/add/post", upload.single("img_main"), (req, res) => {
     step_post,
   } = req.body;
   const img_main = req.file
-    ? `http://localhost:3000/post_images/${req.file.filename}`:null
+    ? `https://foodcipes-back.onrender.com/post_images/${req.file.filename}`:null
   const sql =
     "insert into post( user_id, name , story , for_post , time_use , status_post , ingredient , step_post , date_post ,img_main) values(?,?,?,?,?,?,?,?,?,?)";
   connection.query(

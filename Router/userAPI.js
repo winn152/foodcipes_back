@@ -3,6 +3,7 @@ const router = express.Router();
 const mysql = require("mysql2");
 const multer = require("multer");
 const path = require("path");
+const fs = require('fs');
 const img_user = path.join(__dirname, "../Cloud/Image_Profile");
 
 const connection = mysql.createPool({
@@ -11,6 +12,16 @@ const connection = mysql.createPool({
   password: "B7Ar3G9L",
   database: "u528477660_foodcipe",
 });
+
+const deleteImage = (filePath) => {
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error('Error deleting the file:', err);
+      return;
+    }
+    console.log('File deleted successfully');
+  });
+};
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -23,27 +34,33 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-//   const connection = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "0613824294za",
-//     database: "project_foodcipes",
-//   });
+router.post("/up/user/:userID", upload.single("img_pf"),(req, res) => {
+  const { name } = req.body;
+  const userID = req.params.userID;
+  const img_pf = req.file
+    ? `https://foodcipes-back.onrender.com/profile_images/${req.file.filename}`
+    : null;
 
-//   const connection = mysql.createConnection({
-//     host: "191.101.230.103",
-//     user: "u528477660_foodcipe",
-//     password: "B7Ar3G9L",
-//     database: "u528477660_foodcipe",
-//   });
-
-//   connection.connect((err) => {
-//     if (err) {
-//         console.error('ข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล:', err);
-//         return;
-//     }
-//     console.log('เชื่อมต่อฐานข้อมูลเรียบร้อย');
-// });
+  const sql = "select img_pf from user where user_id = ?";
+  connection.query(sql, [userID],(err,results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    const imgP = path.basename(results[0].img_pf);
+    const imagePath = path.join(img_user, imgP);
+    deleteImage(imagePath);
+    const sql2 = "UPDATE user SET name = ? , img_pf = ? WHERE user_id = ?";
+    connection.query(sql2,[name,img_pf,userID],(err,results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({
+        msg: "Data update successfully",
+        inserted: results.insertId,
+      });
+    })
+  })
+});
 
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
@@ -87,10 +104,10 @@ router.get("/see/profile/:userID", (req, res) => {
 router.post("/add/user", upload.single("img_pf"), (req, res) => {
   const { name, email, password } = req.body;
   const img_pf = req.file
-    ? `http://localhost:3000/profile_images/${req.file.filename}`
+    ? `https://foodcipes-back.onrender.com/profile_images/${req.file.filename}`
     : null;
   const sql =
-    "insert into user(name , email , password , img_pf , type_user , status_user , sum_report) values(?,?,?,?,2,1,0)";
+    "insert into user(name , email , password , img_pf , type_user , status_user , sum_report) values(?,?,?,?,1,1,0)";
   connection.query(sql, [name, email, password, img_pf], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
