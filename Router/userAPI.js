@@ -84,6 +84,7 @@ router.get("/see/user", (req, res) => {
       return res.status(500).json({ error: err.message });
     }
     res.send(results);
+    console.log(555);
   });
 });
 
