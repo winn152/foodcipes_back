@@ -48,7 +48,7 @@ router.post("/up/user/:userID", upload.single("img_pf"),(req, res) => {
   };
 
   const img_pf = req.file
-    ? `https://foodcipes-back.onrender.com/profile_images/${req.file.filename}`
+    ? `https://foodcipesback.up.railway.app/profile_images/${req.file.filename}`
     : isValidUrl(req.body.img_pf)
     ? req.body.img_pf
     : null;
@@ -148,7 +148,7 @@ router.post("/add/user", upload.single("img_pf"), async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   const img_pf = req.file
-    ? `https://foodcipes-back.onrender.com/profile_images/${req.file.filename}`
+    ? `https://foodcipesback.up.railway.app/profile_images/${req.file.filename}`
     : null;
   const sql =
     "insert into user(name , email , password , img_pf , type_user , status_user , sum_report) values(?,?,?,?,1,1,0)";
