@@ -80,18 +80,19 @@ router.post("/see/report_ban", (req, res) => {
             }
             const sql3 = 'select user_id from post where post_id = ?';
             connection.query(sql3,[post_id],(err,result) => {
-                console.log('1');
                 if (err) {
                     return res.status(500).json({ error: err.message });
                 }
-                console.log('3');
                 const sql4 = 'update user set sum_report = sum_report + 1 where user_id = ?';
                 connection.query(sql4,[result[0].user_id],(err,result) => {
                     console.log('2');
                     if (err) {
                         return res.status(500).json({ error: err.message });
                     }
-                    console.log('4');
+                    res.status(200).send({
+                      "status" : true,
+                      "message": "Report Successfully"
+                    })
                 })
             })
         })
@@ -104,18 +105,18 @@ router.post("/see/report_ban", (req, res) => {
             }
             const sql3 = 'select user_id from post where post_id = ?';
             connection.query(sql3,[post_id],(err,result) => {
-                console.log('1');
                 if (err) {
                     return res.status(500).json({ error: err.message });
                 }
-                console.log('3');
                 const sql4 = 'update user set sum_report = sum_report + 1 where user_id = ?';
                 connection.query(sql4,[result[0].user_id],(err,result) => {
-                    console.log('2');
                     if (err) {
                         return res.status(500).json({ error: err.message });
                     }
-                    console.log('4');
+                    res.status(200).send({
+                      "status" : true,
+                      "message": "Report Successfully"
+                    })
                 })
             })
         })
