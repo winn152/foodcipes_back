@@ -136,12 +136,12 @@ router.post("/add/post",upload.fields([{ name: "img_main" }, { name: "linkpath" 
     const {user_id, name, story, for_post, time_use, status_post, ingredient, step_post, type_link ,hashtag} = req.body;
 
     const img_main = req.files["img_main"]
-      ? `https://foodcipes-back.onrender.com/post_images/${req.files["img_main"][0].filename}`
+      ? `https://foodcipesback.up.railway.app/post_images/${req.files["img_main"][0].filename}`
       : null;
 
     const linkpath = req.files["linkpath"]
       ? req.files["linkpath"].map(
-          (file) => `https://foodcipes-back.onrender.com/post_images/${file.filename}`
+          (file) => `https://foodcipesback.up.railway.app/post_images/${file.filename}`
         )
       : [];
     const sql = "insert into post( user_id, name , story , for_post , time_use , status_post , ingredient , step_post , date_post ,img_main) values(?,?,?,?,?,?,?,?,?,?)";
@@ -193,14 +193,14 @@ router.post("/up/post",upload.fields([{ name: "img_main" }, { name: "linkpath" }
     };
 
     const img_main = req.files["img_main"]
-      ? `https://foodcipes-back.onrender.com/post_images/${req.files["img_main"][0].filename}`
+      ? `https://foodcipesback.up.railway.app/post_images/${req.files["img_main"][0].filename}`
       : isValidUrl(req.body.img_main)
       ? req.body.img_main
       : null;
 
     const linkpath = req.files["linkpath"]
       ? req.files["linkpath"].map(
-          (file) => `https://foodcipes-back.onrender.com/post_images/${file.filename}`
+          (file) => `https://foodcipesback.up.railway.app/post_images/${file.filename}`
         )
       : req.body.linkpath
       ? Array.isArray(req.body.linkpath)
