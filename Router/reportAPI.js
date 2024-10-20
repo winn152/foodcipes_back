@@ -34,6 +34,10 @@ router.post("/add/report", (req, res) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
+      res.status(200).send({
+        "status" : true,
+        "message": "Report Successfully"
+      })
     });
   });
 });
