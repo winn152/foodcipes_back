@@ -44,7 +44,7 @@ router.post("/add/report", (req, res) => {
 
 router.get("/see/report_user", (req, res) => {
   const sql =
-    "select post.post_id as post_id,user.name as username,user.img_pf as img_pf,report.type_report as type_report,post.img_main as img_main, post.name as postname, report.report_id from report join user on report.user_id = user.user_id left join post on report.post_id = post.post_id where post.status_post = 3";
+    "select user.user_id,post.post_id as post_id,user.name as username,user.img_pf as img_pf,report.type_report as type_report,post.img_main as img_main, post.name as postname, report.report_id from report join user on report.user_id = user.user_id left join post on report.post_id = post.post_id where post.status_post = 3";
   connection.query(sql, (err, result) => {
     if (err) {
       return res.status(500).json({ error: err.message });
