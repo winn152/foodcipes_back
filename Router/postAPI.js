@@ -67,6 +67,18 @@ router.get("/see/post_following/:userID", (req, res) => {
   });
 });
 
+router.get("/see/post_like/:userID", (req, res) => {
+  const userID = req.params.userID;
+
+  const sql = "select user.name as username,user.img_pf,post.*,count(`like`.like_id) as sumlike from user join post on user.user_id = post.user_id left join `like` on `like`.post_id = post.post_id where user.user_id != ? and post.status_post = 1 group by user.name, user.img_pf,post.post_id order by sumlike desc";
+  connection.query(sql, [userID], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.send(results);
+  });
+});
+
 router.get("/see/member_profile/:userID", (req, res) => {
   const userID = req.params.userID;
 
